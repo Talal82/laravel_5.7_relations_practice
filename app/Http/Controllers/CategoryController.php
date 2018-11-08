@@ -57,8 +57,8 @@ class CategoryController extends Controller
 	public function destroy($id){
 		$category = Category::findOrFail($id);
 
-		if(count($category -> subCategories) > 0){
-			Session::flash('error', 'This category cannot be deleted, it has sub categories.');
+		if(count($category -> subCategories) > 0 || count($category -> projects) > 0){
+			Session::flash('error', 'This category cannot be deleted, it has sub categories or Projects.');
 			return redirect() -> back();
 		}
 		else{
@@ -75,11 +75,13 @@ class CategoryController extends Controller
 		$ids = explode(",", $ids);
 		foreach($ids as $id){
 			$category = Category::findOrFail($id);
-			$category -> delete();
+			if(count($category -> subCategories) > 0 || count($category -> projects) > 0){
+				return response()->json(['status'=>false ,'message'=>"These categories cannot be deleted, because some of them has sub categories or projects.Some of them maybe get deleted."]);
+			}
+			else{
+				$category -> delete();
+				return response()->json(['status'=>true,'message'=>"Category(ies) deleted successfully."]);
+			}
 		}
-
-		return response()->json(['status'=>true,'message'=>"Category(ies) deleted successfully."]);
-		// Session::flash('success', 'Categories deleted successfully');
-  //       return redirect() -> back();
 	}
 }

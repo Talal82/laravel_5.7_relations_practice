@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Validator;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
             return preg_match('/^[\pL\s]+$/u', $value); 
 
         });
+
+        Relation::morphMap([
+            'main_cat' => 'App\Category',
+            'sub_cat' => 'App\SubCategory',
+        ]);
     }
 
     /**

@@ -23,11 +23,11 @@
             <div class="card-header">
                 {{-- Project Categories --}}
                 <div class="pull-left" style="margin-top: 10px; margin-bottom: 0px;">
-                    <h4>Sub Categories of <strong><u>{{ $parentCategory -> name }}</u></strong></h4>
+                    <h4>Projects of <strong><u>{{ $parentCategory -> name }}</u> <span style="color: #0099ff;">({{ ($parentType == 'main_cat') ? 'Main' : 'Sub' }})</span></strong></h4>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('sub_categories.create', $parentCategory -> id) }}"><i class="fa fa-plus"></i> New</a>
-                    <a class="btn btn-primary" href="{{ route('categories.index') }}"><i class="fa fa-arrow-left"></i> Back</a>
+                    <a class="btn btn-primary" href="{{ route('projects.create', [$parentType, $parentCategory -> id]) }}"><i class="fa fa-plus"></i> New</a>
+                    <a class="btn btn-primary" href="{{ ($parentType == 'main_cat') ? route('categories.index') : route('sub_categories.index', [$parentCategory -> category -> slug, $parentCategory -> category_id]) }}"><i class="fa fa-arrow-left"></i> Back</a>
                 </div>
             </div>
 
@@ -36,7 +36,7 @@
                 <!-- session messages -->
                 @include('partials._messages')
 
-                @if(count($categories) > 0)
+                @if(count($projects) > 0)
                 <table class="table">
                     <thead>
                         <tr>
@@ -49,34 +49,29 @@
                             </th>
                             <th>Sr.</th>
                             <th>Name</th>
-                            <th>Slug</th>
-                            <th>Projects</th>
+                            <th>Image</th>
+                            <th>Detail</th>
                             <th width="80">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($categories as $key => $category)
+                        @foreach($projects as $key => $project)
                         <tr>
-                            <td><input type="checkbox" class="checkbox checkbox-custom" data-id="{{$category->id}}"></td>
+                            <td><input type="checkbox" class="checkbox checkbox-custom" data-id="{{$project->id}}"></td>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $category -> name }}</td>
-                            <td>{{ $category -> slug }}</td>
-
+                            <td>{{ $project -> name }}</td>
                             <td>
-                                <a href="{{ route('projects.index', ['sub_cat', $category -> id]) }}" class="btn" style="padding:10 20px; background-color: lightgrey; color: #000; display: inline-block; position: relative;">
-                                    <i class="fa fa-eye"></i><br>
-                                    Projects
-                                    <span class="badge badge-secondary" style="position: absolute; top: 0px;">{{ count($category -> projects) }}</span>
-                                </a>
+                                <img src="{{ asset('images/projects/'. $project -> main_image) }}" width="100" height="100">
                             </td>
+                            <td>{{ $project -> detail }}</td>
 
                             <td>
-                                <a href="{{ route('sub_categories.edit', [ $category -> id ]) }}" class="btn btn-primary btn-sm pull-left waves waves-effect" style="margin-right: 5px;" title="Edit"><i class="fa fa-wrench" title="Edit"></i></a>
+                                <a href="{{ route('projects.edit', [ $project -> id ]) }}" class="btn btn-primary btn-sm pull-left waves waves-effect" style="margin-right: 5px;" title="Edit"><i class="fa fa-wrench" title="Edit"></i></a>
 
-                                <a href="javascript:void(0)" data-id="{{ $category-> id }}" class="sa-remove waves wave-effect btn btn-danger btn-sm pull-left" title="Delete"><i class="fa fa-trash"></i></a>
+                                <a href="javascript:void(0)" data-id="{{ $project-> id }}" class="sa-remove waves wave-effect btn btn-danger btn-sm pull-left" title="Delete"><i class="fa fa-trash"></i></a>
 
 
-                                {!! Form::open(['route' => ['sub_categories.destroy', $category -> id], 'method' => 'DELETE', 'id' => $category -> id]) !!}
+                                {!! Form::open(['route' => ['projects.destroy', $project -> id], 'method' => 'DELETE', 'id' => $project -> id]) !!}
                                 <input type="submit" style="display: none; visibility: none;">
                                 {!! Form::close() !!}
                             </td>
@@ -89,6 +84,11 @@
                     <p>No records found.</p>
                 </div>
                 @endif
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-md-12 text-center">
+                <a href="{{ route('categories.index') }}" class="btn btn-primary">Back to Main Categories</a>
             </div>
         </div>
     </div>

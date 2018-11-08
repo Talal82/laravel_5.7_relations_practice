@@ -65,15 +65,15 @@
                                 <a href="{{ route('sub_categories.index', [$category -> slug, $category -> id]) }}" class="btn" style="padding:10 20px; background-color: lightgrey; color: #000; display: inline-block; position: relative;">
                                     <i class="fa fa-eye"></i><br>
                                     Sub Categories
-                                    <span class="badge badge-danger" style="position: absolute; top: 0px;">{{ count($category -> subCategories) }}</span>
+                                    <span class="badge badge-secondary" style="position: absolute; top: 0px;">{{ count($category -> subCategories) }}</span>
                                 </a>                                
                             </td>
 
                             <td>
-                                <a href="" class="btn" style="padding:10 20px; background-color: lightgrey; color: #000; display: inline-block; position: relative;">
+                                <a href="{{ route('projects.index', ['main_cat', $category -> id]) }}" class="btn" style="padding:10 20px; background-color: lightgrey; color: #000; display: inline-block; position: relative;">
                                     <i class="fa fa-eye"></i><br>
                                     Projects
-                                    <span class="badge badge-danger" style="position: absolute; top: 0px;">2</span>
+                                    <span class="badge badge-secondary" style="position: absolute; top: 0px;">{{ count($category -> projects) }}</span>
                                 </a>
                             </td>
 

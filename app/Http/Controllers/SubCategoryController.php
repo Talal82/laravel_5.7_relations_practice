@@ -61,11 +61,19 @@ class SubCategoryController extends Controller
 
 	public function destroy($id){
 		$category = SubCategory::findOrFail($id);
-		$name = $category -> name;
-		$category -> delete();
 
-		Session::flash('success', 'Category('.$name.') deleted successfully!');
-		return redirect() -> back();
+		if(count($category -> projects) > 0){
+			Session::flash('error', 'This Sub category cannot be deleted, it has Projects.');
+			return redirect() -> back();
+		}
+		else{
+			$name = $category -> name;
+			$category -> delete();
+
+			Session::flash('success', 'Category('.$name.') deleted successfully!');
+			return redirect() -> back();
+		}
+		
 	}
 
 	public function deleteMultiple(Request $request){
@@ -73,11 +81,14 @@ class SubCategoryController extends Controller
 		$ids = explode(",", $ids);
 		foreach($ids as $id){
 			$category = SubCategory::findOrFail($id);
+			if(count($category -> projects) > 0){
+				return response()->json(['status'=>false ,'message'=>"These Sub categories cannot be deleted, because some of them has projects. Some of them maybe get deleted."]);
+			}
+			else{
+				$category -> delete();
+				return response()->json(['status'=>true,'message'=>"Sub Category(ies) deleted successfully."]);
+			}
 			$category -> delete();
 		}
-
-		return response()->json(['status'=>true,'message'=>"Category(ies) deleted successfully."]);
-		// Session::flash('success', 'Categories deleted successfully');
-  //       return redirect() -> back();
 	}
 }

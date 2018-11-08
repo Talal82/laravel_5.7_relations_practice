@@ -38,4 +38,14 @@ Route::prefix('admin') -> middleware(['auth', 'verified']) -> group(function(){
 	//delete multiple sub-categories
 	Route::delete('categories/{slug}/delete-multiple-sub-categories', 'SubCategoryController@deleteMultiple') -> name('delete.multiple.sub-categories');
 
+
+	//admin routes for projects
+	Route::get('categories/{projectable_type}/{projectable_id}/projects', 'ProjectController@index') -> name('projects.index');
+	Route::get('categories/{projectable_type}/{projectable_id}/projects/create', 'ProjectController@create') -> name('projects.create');
+	Route::post('categories/projects/store', 'ProjectController@store') -> name('projects.store');
+	Route::get('categories/projects/{project_id}/edit', 'ProjectController@edit') -> name('projects.edit');
+	Route::put('categories/projects/{project_id}/update', 'ProjectController@update') -> name('projects.update');
+
+	Route::delete('categories/projects/{id}/delete', 'ProjectController@destroy') -> name('projects.destroy');
+	
 });

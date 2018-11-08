@@ -17,7 +17,7 @@ class CreateProjectsTable extends Migration
             $table->increments('id') -> unsigned();
             $table->string('name');
             $table->text('detail');
-            $table->string('main_image');
+            $table->string('main_image') -> default('dummy.jpg');
             $table->integer('projectable_id');
             $table->string('projectable_type');
             $table->timestamps();

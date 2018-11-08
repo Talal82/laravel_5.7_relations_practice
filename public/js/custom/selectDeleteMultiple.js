@@ -53,13 +53,13 @@
                   swal("Success!", data['message'], "success");
                   // alert(data['message']);
                 } else {
-                  swal("Error!", 'Whoops Something went wrong!', "error");
+                  swal("Error!", data['message'], "error");
                 }
               },
               error: function (data) {
                 // alert(data.responseText);
-                swal(data.responseText);
-                // swal("Error!", 'Whoops Something went wrong!', "error");
+                // swal(data.responseText);
+                swal("Error!", 'Whoops Something went wrong!', "error");
               }
             });
           }
